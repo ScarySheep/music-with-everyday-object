@@ -5,9 +5,15 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Detect.unity
     guid: 0ac926d5817d54df194262ddcc5326f5
+  - enabled: 1
+    path: Assets/Scenes/PlaneDetection.unity
+    guid: 399b2652624e05648bf502e188a65d87
+  - enabled: 0
+    path: Assets/Scenes/MainScene.unity
+    guid: 96efe366d2089834f85e573e88f3a294
   m_configObjects:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 9346c9404215843728532ad0a4b0ec80,
       type: 2}
