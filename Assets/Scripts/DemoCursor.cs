@@ -17,7 +17,6 @@ public class DemoCursor : MonoBehaviour
     void Start()
     {
         cursorChildObject.SetActive(useCursor);
-        //objectToPlace.SetActive(false);
     }
 
     // Update is called once per frame
@@ -28,15 +27,13 @@ public class DemoCursor : MonoBehaviour
         {
             UpdateCursor();
         }
-        //else
-        //{
-            List<ARRaycastHit> hits = new List<ARRaycastHit>();
-            rayCastManager.Raycast(Input.GetTouch(0).position, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
-            if (hits.Count > 0)
-            {
-                Instantiate(objectToPlace, hits[0].pose.position, hits[0].pose.rotation);
-            }
-       //}
+        List<ARRaycastHit> hits = new List<ARRaycastHit>();
+        rayCastManager.Raycast(Input.GetTouch(0).position, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
+        if (hits.Count > 0)
+        {
+            //Instantiate(objectToPlace, hits[0].pose.position, hits[0].pose.rotation); // place at tapped pos
+            Instantiate(objectToPlace, transform.position, transform.rotation); // place at cursor pos
+        }
     }
 
     void UpdateCursor()
