@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class CarouselView : MonoBehaviour
 {
 
     public RectTransform[] images;
+    public String[] names;
     public RectTransform view_window;
     public int selection = 0;
 
@@ -60,6 +62,7 @@ public class CarouselView : MonoBehaviour
     void UpdateCurrentIndexLable()
     {
         selection = m_currentIndex;
+        currentIndexLable.text = names[m_currentIndex];
     }
 
     void UpdateCarouselView()
