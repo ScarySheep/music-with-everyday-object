@@ -11,12 +11,15 @@ public class DemoCursor : MonoBehaviour
     public GameObject cursorChildObject;
     public GameObject objectToPlace;
     public GameObject musicMenu;
-    private Canvas musicMenuCanvas;
+    //private Canvas musicMenuCanvas;
     public ARRaycastManager rayCastManager;
     public Text debugText;
     private List<GameObject> objectPlaced = new List<GameObject>();
 
     public bool useCursor = true;
+
+    private bool closedMenu = false;
+
     private enum State
     {
         Placing,
@@ -28,7 +31,8 @@ public class DemoCursor : MonoBehaviour
     {
         cursorChildObject.SetActive(useCursor);
         debugText.text = "State placing";
-        musicMenuCanvas = musicMenu.GetComponent<Canvas>();
+        //musicMenuCanvas = musicMenu.GetComponent<Canvas>();
+        musicMenu.SetActive(false);
     }
 
     // Update is called once per frame
@@ -39,25 +43,32 @@ public class DemoCursor : MonoBehaviour
         {
             UpdateCursor();
         }
+ 
         switch (state)
         {
             case State.Placing:
                 {
-                    debugText.text = "State placing";
                     List<ARRaycastHit> hits = new List<ARRaycastHit>();
                     rayCastManager.Raycast(Input.GetTouch(0).position, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
                     if (hits.Count > 0)
                     {
-                        //Instantiate(objectToPlace, hits[0].pose.position, hits[0].pose.rotation); // place at tapped pos
                         GameObject obj = Instantiate(objectToPlace, transform.position, transform.rotation); // place at cursor pos
                         objectPlaced.Add(obj);
-                        musicMenuCanvas.enabled = true;
+                        //musicMenuCanvas.enabled = true;
+                        musicMenu.SetActive(true);
                         state = State.SettingSound; //switch to setting sound mode after placing the block
                         debugText.text = "State setting sound";
                     }
-
-                    break;
                 }
+                    break;
+            case State.SettingSound:
+                {
+                    if (closedMenu)
+                    {
+                        state = State.Placing;
+                        debugText.text = "State placing";
+                    }
+                } break;
             default: break;
         }
     }
@@ -77,7 +88,7 @@ public class DemoCursor : MonoBehaviour
 
     public void CloseMenu()
     {
-        musicMenuCanvas.enabled = false;
-        state = State.Placing;
+        closedMenu = true;
+        musicMenu.SetActive(false);
     }
 }
