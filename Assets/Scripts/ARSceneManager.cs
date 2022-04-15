@@ -48,7 +48,6 @@ public class ARSceneManager : MonoBehaviour
         }
     }
 
-
     public void CloseMenu()
     {
         musicMenu.SetActive(false);

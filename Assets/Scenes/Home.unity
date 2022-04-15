@@ -305,14 +305,14 @@ PrefabInstance:
     - target: {fileID: 1068519268549487968, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1907142091}
+      objectReference: {fileID: 539526266}
     - target: {fileID: 1068519268549487968, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: CloseMenu
       objectReference: {fileID: 0}
     - target: {fileID: 1068519268549487968, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: DemoCursor, Assembly-CSharp
+      value: ARSceneManager, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_Pivot.x
