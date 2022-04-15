@@ -24,7 +24,7 @@ public class MusicMenu : MonoBehaviour
 
     public void ExitMenu()
     {
-        arSceneManager.CloseMenu();
+        arSceneManager.CloseMenu(index);
     }
 
     public void init()

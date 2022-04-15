@@ -53,9 +53,14 @@ public class ARSceneManager : MonoBehaviour
         musicMenu.SetActive(true);
     }
 
-    public void CloseMenu()
+    public void CloseMenu(int soundIndex)
     {
         musicMenu.SetActive(false);
         state = State.Placing;
+        if (objectPlaced.Count > 0)
+        {
+            GameObject placed = objectPlaced[objectPlaced.Count - 1];
+            placed.GetComponent<MusicBlock>().AssignSound(soundIndex);
+        }
     }
 }
