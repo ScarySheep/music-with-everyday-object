@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class MusicBlock : MonoBehaviour
 {
-    private AudioSource soundPlayer;
     public string soundManagerName;
+    public float volumeAdjustmentAmt;
+
+    private AudioSource soundPlayer;
     private bool isPlaying;
 
     // Start is called before the first frame update
@@ -29,9 +31,12 @@ public class MusicBlock : MonoBehaviour
         // (could alternatively have a parallel array and method)
         soundPlayer.clip = SM.GetSound(soundIndex);
         soundPlayer.loop = true;
+        soundPlayer.spatialize = true;
+        // TODO: should we adjust dopplerLevel?
         Play();
     }
 
+    // TODO: should we use UnPause?? (must test)
     void Play()
     {
         if (!isPlaying)
@@ -50,12 +55,15 @@ public class MusicBlock : MonoBehaviour
         }
     }
 
-    // TODO
+    // TODO: do we need this? void Restart() { }
 
-    void Restart() { }
+    void IncreaseVolume() { AdjustVolume(volumeAdjustmentAmt); }
 
-    void IncreaseVolume() { }
+    void DecreaseVolume() { AdjustVolume(-1.0 * volumeAdjustmentAmt); }
 
-    void DecreaseVolume() { }
+    void AdjustVolume(float adjustment)
+    {
+        soundPlayer.volume += adjustment;
+    }
 
 }
