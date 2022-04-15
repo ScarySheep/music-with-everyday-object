@@ -291,6 +291,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &768629233 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3883028860045627692, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+  m_PrefabInstance: {fileID: 1009926968}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1009926968
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -305,14 +316,18 @@ PrefabInstance:
     - target: {fileID: 1068519268549487968, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 539526266}
+      objectReference: {fileID: 1009926971}
     - target: {fileID: 1068519268549487968, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: CloseMenu
+      value: SelectSong
       objectReference: {fileID: 0}
     - target: {fileID: 1068519268549487968, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: ARSceneManager, Assembly-CSharp
+      value: MusicMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 3883028859314688945, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_PresetInfoIsWorld
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_Pivot.x
@@ -344,11 +359,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 320
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 240
+      value: 1080
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_LocalScale.x
@@ -392,7 +407,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 1190
+      value: 1170
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688947, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -418,6 +433,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3883028859314688951, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: musicCover
+      value: 
+      objectReference: {fileID: 768629233}
+    - target: {fileID: 3883028859314688951, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: musicTitle
+      value: 
+      objectReference: {fileID: 1128771721}
+    - target: {fileID: 3883028859314688951, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: sceneManager
+      value: 
+      objectReference: {fileID: 539526265}
     - target: {fileID: 3883028859429764060, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_SizeDelta.x
       value: 300
@@ -444,19 +471,51 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883028860045627693, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 300
+      value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 3883028860045627693, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 300
+      value: 550
       objectReference: {fileID: 0}
     - target: {fileID: 3883028860258881675, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -200
+      value: 293
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097642750464201889, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097642750464201889, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1009926971}
+    - target: {fileID: 4097642750464201889, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ExitMenu
+      objectReference: {fileID: 0}
+    - target: {fileID: 4097642750464201889, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MusicMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8265133609419692748, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -300
+      value: -195
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529364508708503575, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529364508708503575, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1009926971}
+    - target: {fileID: 8529364508708503575, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: NextSong
+      objectReference: {fileID: 0}
+    - target: {fileID: 8529364508708503575, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MusicMenu, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
@@ -470,6 +529,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3883028859314688948, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
   m_PrefabInstance: {fileID: 1009926968}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1009926971 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3883028859314688951, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+  m_PrefabInstance: {fileID: 1009926968}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1009926970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f004d76ef0c6dcd49b551fe6429cd5fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1050965796
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,6 +715,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!114 &1128771721 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3883028860258881673, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+  m_PrefabInstance: {fileID: 1009926968}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1297908138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1116,7 +1197,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1914685884
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1351,18 +1432,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f004d76ef0c6dcd49b551fe6429cd5fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  images:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  names:
-  - Distracted Boyfriend
-  - Cat getting yelled
-  - Cat riding Unicorn
-  - Disaster girl
-  view_window: {fileID: 0}
-  selection: 0
-  image_gap: 30
-  swipeThrustHold: 30
-  currentIndexLable: {fileID: 0}
+  musicCoverSprites: []
+  musicTitleTexts: []
+  musicCover: {fileID: 0}
+  musicTitle: {fileID: 0}
+  sceneManager: {fileID: 0}

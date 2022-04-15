@@ -26,7 +26,6 @@ public class ARSceneManager : MonoBehaviour
         demoCursor = ARCursor.GetComponent<DemoCursor>();
     }
 
-
     void Update()
     {
         switch (state)
@@ -38,7 +37,7 @@ public class ARSceneManager : MonoBehaviour
                     {
                         GameObject obj = Instantiate(objectToPlace, demoCursor.transform.position, demoCursor.transform.rotation); // place at cursor pos
                         objectPlaced.Add(obj);
-                        musicMenu.SetActive(true);
+                        OpenMenu();
                         debugText.text = "State setting sound";
                         state = State.SettingSound; //switch to setting sound mode after placing the block
                     }
@@ -46,6 +45,12 @@ public class ARSceneManager : MonoBehaviour
                 break;
             default: break;
         }
+    }
+
+    public void OpenMenu()
+    {
+        musicMenu.GetComponent<MusicMenu>().init();
+        musicMenu.SetActive(true);
     }
 
     public void CloseMenu()
