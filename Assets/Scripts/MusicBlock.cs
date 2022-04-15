@@ -59,7 +59,7 @@ public class MusicBlock : MonoBehaviour
 
     void IncreaseVolume() { AdjustVolume(volumeAdjustmentAmt); }
 
-    void DecreaseVolume() { AdjustVolume(-1.0 * volumeAdjustmentAmt); }
+    void DecreaseVolume() { AdjustVolume(-1.0f * volumeAdjustmentAmt); }
 
     void AdjustVolume(float adjustment)
     {

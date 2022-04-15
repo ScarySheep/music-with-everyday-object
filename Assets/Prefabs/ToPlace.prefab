@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   soundManagerName: SoundManager
+  volumeAdjustmentAmt: 0.05
 --- !u!82 &8662252319070587031
 AudioSource:
   m_ObjectHideFlags: 0
