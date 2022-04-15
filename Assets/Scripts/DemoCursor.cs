@@ -18,7 +18,7 @@ public class DemoCursor : MonoBehaviour
 
     public bool useCursor = true;
 
-    private bool closedMenu = false;
+    //private bool closedMenu = false;
 
     private enum State
     {
@@ -43,14 +43,14 @@ public class DemoCursor : MonoBehaviour
         {
             UpdateCursor();
         }
- 
+
         switch (state)
         {
             case State.Placing:
                 {
                     List<ARRaycastHit> hits = new List<ARRaycastHit>();
                     rayCastManager.Raycast(Input.GetTouch(0).position, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
-                    if (hits.Count > 0)
+                    if (hits.Count > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         GameObject obj = Instantiate(objectToPlace, transform.position, transform.rotation); // place at cursor pos
                         objectPlaced.Add(obj);
@@ -60,15 +60,7 @@ public class DemoCursor : MonoBehaviour
                         debugText.text = "State setting sound";
                     }
                 }
-                    break;
-            case State.SettingSound:
-                {
-                    if (closedMenu)
-                    {
-                        state = State.Placing;
-                        debugText.text = "State placing";
-                    }
-                } break;
+                break;
             default: break;
         }
     }
@@ -88,7 +80,8 @@ public class DemoCursor : MonoBehaviour
 
     public void CloseMenu()
     {
-        closedMenu = true;
+        //closedMenu = true;
         musicMenu.SetActive(false);
+        state = State.Placing;
     }
 }
