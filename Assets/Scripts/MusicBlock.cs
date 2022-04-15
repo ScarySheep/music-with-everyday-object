@@ -23,7 +23,7 @@ public class MusicBlock : MonoBehaviour
         // audio visualization?
     }
 
-    void AssignSound(int soundIndex)
+    public void AssignSound(int soundIndex)
     {
         SoundManager SM = GameObject.Find(soundManagerName).GetComponent<SoundManager>();
         // TODO: we might need to return pairs: AudioClip & bool
@@ -37,7 +37,7 @@ public class MusicBlock : MonoBehaviour
     }
 
     // TODO: should we use UnPause?? (must test)
-    void Play()
+    public void Play()
     {
         if (!isPlaying)
         {
@@ -46,7 +46,7 @@ public class MusicBlock : MonoBehaviour
         }
     }
 
-    void Pause()
+    public void Pause()
     {
         if (isPlaying)
         {
@@ -57,11 +57,11 @@ public class MusicBlock : MonoBehaviour
 
     // TODO: do we need this? void Restart() { }
 
-    void IncreaseVolume() { AdjustVolume(volumeAdjustmentAmt); }
+    public void IncreaseVolume() { AdjustVolume(volumeAdjustmentAmt); }
 
-    void DecreaseVolume() { AdjustVolume(-1.0f * volumeAdjustmentAmt); }
+    public void DecreaseVolume() { AdjustVolume(-1.0f * volumeAdjustmentAmt); }
 
-    void AdjustVolume(float adjustment)
+    private void AdjustVolume(float adjustment)
     {
         soundPlayer.volume += adjustment;
     }
