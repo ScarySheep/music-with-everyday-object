@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.XR.ARFoundation;
+using UnityEngine.EventSystems;
 
 public class ARSceneManager : MonoBehaviour
 {
@@ -16,9 +17,11 @@ public class ARSceneManager : MonoBehaviour
     private enum State
     {
         Placing,
+        Selecting,
         SettingSound
     }
     private State state = State.Placing;
+    private GameObject currentGameObject;
 
     void Start()
     {
@@ -33,17 +36,56 @@ public class ARSceneManager : MonoBehaviour
             case State.Placing:
                 {
                     //if point is on a plane and there is a on touch down
-                    if (demoCursor.hits.Count > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    if (demoCursor.hits.Count > 0 && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
                         GameObject obj = Instantiate(objectToPlace, demoCursor.transform.position, demoCursor.transform.rotation); // place at cursor pos
                         objectPlaced.Add(obj);
-                        OpenMenu();
-                        debugText.text = "State setting sound";
-                        state = State.SettingSound; //switch to setting sound mode after placing the block
                     }
+                    break;
                 }
-                break;
+
+            case State.Selecting:
+                {
+                    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+                    {
+                        // Construct a ray from the current touch coordinates
+                        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+                        RaycastHit hit;
+                        if (Physics.Raycast(ray, out hit))
+                        {
+                            if (hit.collider.gameObject.name == "ToPlace(Clone)")
+                            {
+                                currentGameObject = hit.collider.gameObject;
+                                OpenMenu();
+                                debugText.text = "State setting sound";
+                                state = State.SettingSound; //switch to setting sound mode after placing the block
+                            }
+                        }
+                        else
+                        {
+                            debugText.text = "hit nothing!";
+                        }
+                    }
+                    break;
+                }
             default: break;
+        }
+    }
+
+    public void SwitchMode()
+    {
+        if (state != State.SettingSound)
+        {
+            if (state == State.Placing)
+            {
+                debugText.text = "selecting!";
+                state = State.Selecting;
+            }
+            else if (state == State.Selecting)
+            {
+                debugText.text = "placing!";
+                state = State.Placing;
+            }
         }
     }
 
@@ -56,11 +98,8 @@ public class ARSceneManager : MonoBehaviour
     public void CloseMenu(int soundIndex)
     {
         musicMenu.SetActive(false);
-        state = State.Placing;
-        if (objectPlaced.Count > 0)
-        {
-            GameObject placed = objectPlaced[objectPlaced.Count - 1];
-            placed.GetComponent<MusicBlock>().AssignSound(soundIndex);
-        }
+        currentGameObject.GetComponent<MusicBlock>().AssignSound(soundIndex);
+        currentGameObject.GetComponent<Material>().color = Color.cyan;
+        state = State.Selecting;
     }
 }
