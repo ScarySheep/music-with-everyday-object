@@ -1059,7 +1059,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -316}
+  m_AnchoredPosition: {x: 0, y: -405}
   m_SizeDelta: {x: 300, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1437423502
@@ -1612,7 +1612,6 @@ GameObject:
   - component: {fileID: 507542426268161592}
   - component: {fileID: 507542426268161593}
   - component: {fileID: 507542426268161598}
-  - component: {fileID: 507542426268161599}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -1633,24 +1632,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 3
+  m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &507542426268161599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 507542426268161596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f004d76ef0c6dcd49b551fe6429cd5fc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicCoverSprites: []
-  musicTitleTexts: []
-  musicCover: {fileID: 0}
-  musicTitle: {fileID: 0}
-  sceneManager: {fileID: 0}

@@ -99,7 +99,7 @@ public class ARSceneManager : MonoBehaviour
     {
         musicMenu.SetActive(false);
         currentGameObject.GetComponent<MusicBlock>().AssignSound(soundIndex);
-        currentGameObject.GetComponent<Material>().color = Color.cyan;
+        //currentGameObject.GetComponent<Material>().color = Color.cyan;
         state = State.Selecting;
     }
 }
