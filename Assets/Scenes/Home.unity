@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -273,7 +273,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicMenu: {fileID: 1009926970}
-  objectToPlace: {fileID: 5586972583618904198, guid: 181d2bfb0fc4a46eb9810f75932a49dd, type: 3}
+  objectToPlace: {fileID: 5586972583618904198, guid: 07568d6e40107474e9b2639494df893e, type: 3}
   ARCursor: {fileID: 1907142089}
   debugText: {fileID: 1914685885}
 --- !u!4 &539526267
@@ -1347,8 +1347,8 @@ MonoBehaviour:
   sounds:
   - {fileID: 8300000, guid: e68d6a02db1d94357a45be67cc0d1aea, type: 3}
   - {fileID: 8300000, guid: 75d2e959246924298b0f57be3b1fdd91, type: 3}
-  - {fileID: 8300000, guid: 8492d656280e046e6bb538f9b025efeb, type: 3}
   - {fileID: 8300000, guid: 6f390b609c1894dfca144d8528a74d81, type: 3}
+  - {fileID: 8300000, guid: 8492d656280e046e6bb538f9b025efeb, type: 3}
 --- !u!1 &1907142089
 GameObject:
   m_ObjectHideFlags: 0

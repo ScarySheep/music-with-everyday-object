@@ -36,9 +36,11 @@ public class ARSceneManager : MonoBehaviour
             case State.Placing:
                 {
                     //if point is on a plane and there is a on touch down
-                    if (demoCursor.hits.Count > 0 && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && Input.GetTouch(0).phase == TouchPhase.Began)
+                    if (demoCursor.hits.Count > 0 && Input.touchCount > 0 && !EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId) && Input.GetTouch(0).phase == TouchPhase.Began)
                     {
-                        GameObject obj = Instantiate(objectToPlace, demoCursor.transform.position, demoCursor.transform.rotation); // place at cursor pos
+                        Vector3 adjustment = new Vector3(0.0f, 0.025f, 0.0f);
+                        Vector3 pos = demoCursor.transform.position + adjustment;
+                        GameObject obj = Instantiate(objectToPlace, pos, demoCursor.transform.rotation); // place at cursor pos
                         objectPlaced.Add(obj);
                     }
                     break;
@@ -53,10 +55,10 @@ public class ARSceneManager : MonoBehaviour
                         RaycastHit hit;
                         if (Physics.Raycast(ray, out hit))
                         {
-                            if (hit.collider.gameObject.name == "ToPlace(Clone)")
+                            if (hit.collider.gameObject.name == "VirtualMusicBlock(Clone)")
                             {
                                 currentGameObject = hit.collider.gameObject;
-                                OpenMenu();
+                                OpenBlockMenu();
                                 debugText.text = "State setting sound";
                                 state = State.SettingSound; //switch to setting sound mode after placing the block
                             }
@@ -89,6 +91,19 @@ public class ARSceneManager : MonoBehaviour
         }
     }
 
+    public void OpenBlockMenu()
+    {
+        MusicBlock MB = currentGameObject.GetComponent<MusicBlock>();
+        if (MB != null)
+        {
+            MB.ShowMenu();
+        }
+    }
+
+    /* TODO (in progress): changing the flow so that we open the MusicBlockMenu
+     * (the block's control panel), then from there, if a certain button is
+     * pressed, we open up this music selection menu (can probably do this with
+     * some broadcast-y magic) */
     public void OpenMenu()
     {
         musicMenu.GetComponent<MusicMenu>().init();
@@ -101,5 +116,6 @@ public class ARSceneManager : MonoBehaviour
         currentGameObject.GetComponent<MusicBlock>().AssignSound(soundIndex);
         //currentGameObject.GetComponent<Material>().color = Color.cyan;
         state = State.Selecting;
+        debugText.text = "selecting!";
     }
 }
