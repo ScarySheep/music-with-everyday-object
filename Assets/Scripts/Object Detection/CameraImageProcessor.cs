@@ -122,7 +122,7 @@ public class CameraImageProcessor : MonoBehaviour
         m_Texture.Apply();
 
         //here is where I'd call the detectingObject function
-
+        detectingObject();
         // Need to dispose the request to delete resources associated
         // with the request, including the raw data.
         request.Dispose();

@@ -39,6 +39,7 @@ sealed class Marker : MonoBehaviour
         var color = Color.HSVToRGB(hue, 1, 1);
         color.a = 0.4f;
         _panel.color = color;
+        _label.color = color;
 
         // Enable
         gameObject.SetActive(true);
