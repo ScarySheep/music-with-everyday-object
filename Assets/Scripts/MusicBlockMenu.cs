@@ -15,7 +15,7 @@ public class MusicBlockMenu : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update() {}
+    void Update() { }
 
     public void GiveCamToCanvas(Camera cam)
     {
@@ -41,6 +41,6 @@ public class MusicBlockMenu : MonoBehaviour
     {
         this.gameObject.SetActive(visible);
         /* TODO: do we also need to set the child components, or does changing
-         * the parent's status automatically change all the children? */       
+         * the parent's status automatically change all the children? */
     }
 }

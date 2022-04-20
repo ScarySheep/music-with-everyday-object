@@ -71,7 +71,7 @@ public class MusicBlock : MonoBehaviour
              * maybe we can update this virtual cube to have the width of
              * that box, and that might allow us to get a cube that covers
              * approximately the same area? *screams in math* */
-             /* TODO: need to make it "look" only along the Y-axis...hmmm... */
+            /* TODO: need to make it "look" only along the Y-axis...hmmm... */
             transform.LookAt(ARCam.transform);
         }
     }
