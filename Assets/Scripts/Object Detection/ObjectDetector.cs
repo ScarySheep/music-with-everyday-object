@@ -177,7 +177,7 @@ public class ObjectDetector : MonoBehaviour
                         tempBox.y = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 1];
                         tempBox.width = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 2];
                         tempBox.height = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 3];
-                        tempBox.label = labels[bestIndex];
+                        tempBox.label = labels[bestIndex]+' '+bestValue;
                         tempBox.anchorIndex = anchor + anchorMask;
                         tempBox.cellIndexY = boundingBoxX;
                         tempBox.cellIndexX = boundingBoxY;
