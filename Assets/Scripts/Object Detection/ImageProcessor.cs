@@ -9,6 +9,7 @@ public class ImageProcessor : MonoBehaviour
 {
     [SerializeField] private ARCameraManager cameraManager;
     [SerializeField] Text debug;
+    [SerializeField] RawImage placeHolder;
     ObjectDetector objectDetector;
     Texture2D texture = null;
     bool resolutionSetup = false;
@@ -122,7 +123,7 @@ public class ImageProcessor : MonoBehaviour
         // Copy the image data into the texture.
         texture.LoadRawTextureData(rawData);
         texture.Apply();
-
+        placeHolder.texture = texture;
         //here is where I'd call the detectingObject function
         objectDetector.ExecuteML(texture);
 
