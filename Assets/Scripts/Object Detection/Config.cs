@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 public class Config : MonoBehaviour
 {
-    public const int CaptureSize = 832;
+    public const int CaptureSize = 720;
     public const int ImageSize = 416;
     public const int ClassCount = 80;
     public const int BoxSectionSmall = 13;

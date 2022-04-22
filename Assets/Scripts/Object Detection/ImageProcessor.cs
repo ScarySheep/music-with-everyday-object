@@ -43,7 +43,7 @@ public class ImageProcessor : MonoBehaviour
             for (int i = 0; i < configurations.Length; ++i)
             {
                 var config = configurations[i];
-                if (config.width == 1920 && config.height == 1080 && config.framerate.Value == 30)
+                if (config.width == 1920 && config.height == 1080)
                 {
                     // Get that configuration by index
                     // Make it the active one
