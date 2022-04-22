@@ -9,21 +9,20 @@ public class ObjectDetector : MonoBehaviour
     public TextAsset labelsAsset;
     public NNModel srcModel;
     public Transform displayLocation;
-    public float confidenceThreshold = 0.25f;
-    public float iouThreshold = 0.45f;
     public Font font;
-
 
     private Model model;
     private IWorker engine;
     private string[] labels;
-    private const int amountOfClasses = 80;
-    private const int box20Sections = 20;
-    private const int box40Sections = 40;
-    private const int anchorBatchSize = 85;
-    private const int inputResolutionX = 640;
-    private const int inputResolutionY = 640;
-    //model output returns box scales relative to the anchor boxes, 3 are used for 40x40 outputs and other 3 for 20x20 outputs,
+    private const int amountOfClasses = Config.ClassCount;
+    private const int boxSectionSmall = Config.BoxSectionSmall;
+    private const int boxSectionLarge = Config.BoxSectionLarge;
+    private const int anchorBatchSize = Config.ClassCount + 5;
+    private const int inputResolutionX = Config.ImageSize;
+    private const int inputResolutionY = Config.ImageSize;
+    private const float confidenceThreshold = Config.confidenceThreshold;
+    private const float iouThreshold = Config.iouThreshold;
+    //model output returns box scales relative to the anchor boxes, 3 are used for 40x40/26x26 outputs and other 3 for 20x20/13x13 outputs,
     //each cell has 3 boxes 3x85=255
     private readonly float[] anchors = { 10, 14, 23, 27, 37, 58, 81, 82, 135, 169, 344, 319 };
 
@@ -61,7 +60,7 @@ public class ObjectDetector : MonoBehaviour
     public void ExecuteML(Texture texture)
     {
         ClearAnnotations();
-        if (texture.width != 640 || texture.height != 640)
+        if (texture.width != inputResolutionX || texture.height != inputResolutionY)
         {
             Debug.LogError("Image resolution must be 640x640. Make sure Texture Import Settings are similar to the example images");
         }
@@ -73,8 +72,8 @@ public class ObjectDetector : MonoBehaviour
         engine.Execute(input);
 
         //read output tensors
-        var output20 = engine.PeekOutput("016_convolutional"); //016_convolutional = original output tensor name for 20x20 boundingBoxes
-        var output40 = engine.PeekOutput("023_convolutional"); //023_convolutional = original output tensor name for 40x40 boundingBoxes
+        var outputSmall = engine.PeekOutput("016_convolutional"); //016_convolutional = original output tensor name for 20x20/13x13 boundingBoxes
+        var outputLarge = engine.PeekOutput("023_convolutional"); //023_convolutional = original output tensor name for 40x40/26x26 boundingBoxes
 
         //this list is used to store the original model output data
         List<Box> outputBoxList = new List<Box>();
@@ -83,7 +82,7 @@ public class ObjectDetector : MonoBehaviour
         List<PixelBox> pixelBoxList = new List<PixelBox>();
 
         //decode the output 
-        outputBoxList = DecodeOutput(output20, output40);
+        outputBoxList = DecodeOutput(outputSmall, outputLarge);
 
         //convert output to intuitive pixel data (x,y coords from the center of the image; height and width in pixels)
         pixelBoxList = ConvertBoxToPixelData(outputBoxList);
@@ -177,7 +176,7 @@ public class ObjectDetector : MonoBehaviour
                         tempBox.y = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 1];
                         tempBox.width = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 2];
                         tempBox.height = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 3];
-                        tempBox.label = labels[bestIndex]+' '+bestValue;
+                        tempBox.label = labels[bestIndex];
                         tempBox.anchorIndex = anchor + anchorMask;
                         tempBox.cellIndexY = boundingBoxX;
                         tempBox.cellIndexX = boundingBoxY;
@@ -189,13 +188,13 @@ public class ObjectDetector : MonoBehaviour
         return outputBoxList;
     }
 
-    public List<Box> DecodeOutput(Tensor output20, Tensor output40)
+    public List<Box> DecodeOutput(Tensor outputSmall, Tensor outputLarge)
     {
         List<Box> outputBoxList = new List<Box>();
 
-        //decode results into a list for each output(20x20 and 40x40), anchor mask selects the output box presets (first 3 or the last 3 presets) 
-        outputBoxList = DecodeYolo(outputBoxList, output40, box40Sections, 0);
-        outputBoxList = DecodeYolo(outputBoxList, output20, box20Sections, 3);
+        //decode results into a list for each output(20x20/13x13 and 40x40/26x26), anchor mask selects the output box presets (first 3 or the last 3 presets) 
+        outputBoxList = DecodeYolo(outputBoxList, outputLarge, boxSectionLarge, 0);
+        outputBoxList = DecodeYolo(outputBoxList, outputSmall, boxSectionSmall, 3);
 
         return outputBoxList;
     }
@@ -208,7 +207,7 @@ public class ObjectDetector : MonoBehaviour
             PixelBox tempBox;
 
             //apply anchor mask, each output uses a different preset box
-            var boxSections = boxList[i].anchorIndex > 2 ? box20Sections : box40Sections;
+            var boxSections = boxList[i].anchorIndex > 2 ? boxSectionSmall : boxSectionLarge;
 
             //move marker to the edge of the picture -> move to the center of the cell -> add cell offset (cell size * amount of cells) -> add scale
             tempBox.x = (float)(-inputResolutionX * 0.5) + inputResolutionX / boxSections * 0.5f +

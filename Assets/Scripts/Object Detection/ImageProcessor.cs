@@ -17,26 +17,47 @@ public class ImageProcessor : MonoBehaviour
     {
         objectDetector = GetComponent<ObjectDetector>();
     }
-    void setupResolution(){
-        debug.text = "camera config error";
-        //setup ar camera to a specific resolution
-        var configurations = cameraManager.GetConfigurations(Allocator.Temp);
-        for (int i = 0; i < configurations.Length; ++i)
+
+    void Update()
+    {
+        if (!resolutionSetup)
         {
-            var config = configurations[i];
-            if(config.width == 1280 && config.height == 720 && config.framerate.Value == 30){
-                // Get that configuration by index
-                // Make it the active one
-                cameraManager.currentConfiguration = config;
-                debug.text = "camera config set";
-                break;
-            }
+            setupResolution();
         }
-        resolutionSetup = true;
+    }
+
+    void setupResolution()
+    {
+        if ((cameraManager == null) || (cameraManager.subsystem == null) || !cameraManager.subsystem.running)
+            return;
+        //setup ar camera to a specific resolution
+        using (var configurations = cameraManager.GetConfigurations(Allocator.Temp))
+        {
+            if (!configurations.IsCreated || (configurations.Length <= 0))
+            {
+                return;
+            }
+
+            debug.text = "camera config error";
+            for (int i = 0; i < configurations.Length; ++i)
+            {
+                var config = configurations[i];
+                if (config.width == 1920 && config.height == 1080 && config.framerate.Value == 30)
+                {
+                    // Get that configuration by index
+                    // Make it the active one
+                    cameraManager.currentConfiguration = config;
+                    debug.text = "camera config set";
+                    break;
+                }
+            }
+            resolutionSetup = true;
+        }
     }
     public void GetImageAsync()
     {
-        if(!resolutionSetup){
+        if (!resolutionSetup)
+        {
             setupResolution();
         }
         // Get information about the device camera image.
@@ -57,11 +78,11 @@ public class ImageProcessor : MonoBehaviour
         var request = image.ConvertAsync(new XRCpuImage.ConversionParams
         {
             // Use the full image.
-            inputRect = new RectInt((int)((image.width - 640) / 2), (int)((image.height - 640) / 2), 640, 640),
+            inputRect = new RectInt((int)((image.width - Config.CaptureSize) / 2), (int)((image.height - Config.CaptureSize) / 2), Config.CaptureSize, Config.CaptureSize),
             //inputRect = new RectInt(0, 0, 64, 64),
 
             // Downsample by 2.
-            outputDimensions = new Vector2Int(640, 640),
+            outputDimensions = new Vector2Int(Config.ImageSize, Config.ImageSize),
 
             // Color image format.
             outputFormat = TextureFormat.RGBA32,
