@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
@@ -7,18 +8,37 @@ using UnityEngine.UI;
 public class ImageProcessor : MonoBehaviour
 {
     [SerializeField] private ARCameraManager cameraManager;
-    [SerializeField] RawImage test;
+    [SerializeField] Text debug;
     ObjectDetector objectDetector;
     Texture2D texture = null;
-
+    bool resolutionSetup = false;
 
     void Start()
     {
         objectDetector = GetComponent<ObjectDetector>();
     }
-
+    void setupResolution(){
+        debug.text = "camera config error";
+        //setup ar camera to a specific resolution
+        var configurations = cameraManager.GetConfigurations(Allocator.Temp);
+        for (int i = 0; i < configurations.Length; ++i)
+        {
+            var config = configurations[i];
+            if(config.width == 1280 && config.height == 720 && config.framerate.Value == 30){
+                // Get that configuration by index
+                // Make it the active one
+                cameraManager.currentConfiguration = config;
+                debug.text = "camera config set";
+                break;
+            }
+        }
+        resolutionSetup = true;
+    }
     public void GetImageAsync()
     {
+        if(!resolutionSetup){
+            setupResolution();
+        }
         // Get information about the device camera image.
         if (cameraManager.TryAcquireLatestCpuImage(out XRCpuImage image))
         {
