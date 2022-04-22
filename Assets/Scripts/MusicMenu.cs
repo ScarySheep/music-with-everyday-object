@@ -12,6 +12,8 @@ public class MusicMenu : MonoBehaviour
     public Text musicTitle;
     public GameObject sceneManager;
 
+    public SoundManager _soundManager;
+
     private ARSceneManager arSceneManager;
     private int songCount;
     private int index = 0;
@@ -37,15 +39,11 @@ public class MusicMenu : MonoBehaviour
     public void NextSong()
     {
         index++;
-        if (index == songCount)
-        {
-            ExitMenu();
-        }
-        else
-        {
+        index = index % songCount;
+
             musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
             musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
-        }
+            _soundManager.playNextSound(index);
     }
 
     public void SelectSong()
