@@ -18,8 +18,8 @@ public class ObjectDetector : MonoBehaviour
     private const int boxSectionSmall = Config.BoxSectionSmall;
     private const int boxSectionLarge = Config.BoxSectionLarge;
     private const int anchorBatchSize = Config.ClassCount + 5;
-    private const int inputResolutionX = Config.ImageSize;
-    private const int inputResolutionY = Config.ImageSize;
+    private const int onScreenResolutionX = Config.CaptureSize;
+    private const int onScreenResolutionY = Config.CaptureSize;
     private const float confidenceThreshold = Config.confidenceThreshold;
     private const float iouThreshold = Config.iouThreshold;
     //model output returns box scales relative to the anchor boxes, 3 are used for 40x40/26x26 outputs and other 3 for 20x20/13x13 outputs,
@@ -60,9 +60,10 @@ public class ObjectDetector : MonoBehaviour
     public void ExecuteML(Texture texture)
     {
         ClearAnnotations();
-        if (texture.width != inputResolutionX || texture.height != inputResolutionY)
+        if (texture.width != Config.ImageSize || texture.height != Config.ImageSize)
         {
-            Debug.LogError("Image resolution must be 640x640. Make sure Texture Import Settings are similar to the example images");
+            //Debug.LogError("Image resolution must be 640x640. Make sure Texture Import Settings are similar to the example images");
+            ARDebug.log("Wrong image size");
         }
 
         engine = WorkerFactory.CreateWorker(WorkerFactory.Type.CSharpBurst, model);
@@ -89,6 +90,10 @@ public class ObjectDetector : MonoBehaviour
 
         //non max suppression (remove overlapping objects)
         pixelBoxList = NonMaxSuppression(pixelBoxList);
+
+        if(pixelBoxList.Count>0){
+            ARDebug.log("Object found!");
+        }
 
         //draw bounding boxes
         for (int i = 0; i < pixelBoxList.Count; i++)
@@ -210,10 +215,10 @@ public class ObjectDetector : MonoBehaviour
             var boxSections = boxList[i].anchorIndex > 2 ? boxSectionSmall : boxSectionLarge;
 
             //move marker to the edge of the picture -> move to the center of the cell -> add cell offset (cell size * amount of cells) -> add scale
-            tempBox.x = (float)(-inputResolutionX * 0.5) + inputResolutionX / boxSections * 0.5f +
-                        inputResolutionX / boxSections * boxList[i].cellIndexX + Sigmoid(boxList[i].x);
-            tempBox.y = (float)(-inputResolutionY * 0.5) + inputResolutionX / boxSections * 0.5f +
-                          inputResolutionX / boxSections * boxList[i].cellIndexY + Sigmoid(boxList[i].y);
+            tempBox.x = (float)(-onScreenResolutionX * 0.5) + onScreenResolutionX / boxSections * 0.5f +
+                        onScreenResolutionX / boxSections * boxList[i].cellIndexX + Sigmoid(boxList[i].x);
+            tempBox.y = (float)(-onScreenResolutionY * 0.5) + onScreenResolutionX / boxSections * 0.5f +
+                          onScreenResolutionX / boxSections * boxList[i].cellIndexY + Sigmoid(boxList[i].y);
 
             //select the anchor box and multiply it by scale
             tempBox.width = anchors[boxList[i].anchorIndex * 2] * (float)Math.Pow(Math.E, boxList[i].width);

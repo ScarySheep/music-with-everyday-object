@@ -8,7 +8,6 @@ using UnityEngine.UI;
 public class ImageProcessor : MonoBehaviour
 {
     [SerializeField] private ARCameraManager cameraManager;
-    [SerializeField] Text debug;
     [SerializeField] RawImage placeHolder;
     ObjectDetector objectDetector;
     Texture2D texture = null;
@@ -39,7 +38,6 @@ public class ImageProcessor : MonoBehaviour
                 return;
             }
 
-            debug.text = "camera config error";
             for (int i = 0; i < configurations.Length; ++i)
             {
                 var config = configurations[i];
@@ -48,7 +46,8 @@ public class ImageProcessor : MonoBehaviour
                     // Get that configuration by index
                     // Make it the active one
                     cameraManager.currentConfiguration = config;
-                    debug.text = "camera config set";
+                    ARDebug.log("Camera resolution set");
+
                     break;
                 }
             }
