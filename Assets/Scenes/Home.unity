@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657856, g: 0.49641234, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -431,7 +431,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688948, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3883028859314688951, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: musicCover
@@ -445,6 +445,10 @@ PrefabInstance:
       propertyPath: sceneManager
       value: 
       objectReference: {fileID: 539526265}
+    - target: {fileID: 3883028859314688951, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
+      propertyPath: _soundManager
+      value: 
+      objectReference: {fileID: 1890453035}
     - target: {fileID: 3883028859429764060, guid: 5122c3e24b12e784f8ea2d645f597e39, type: 3}
       propertyPath: m_SizeDelta.x
       value: 300

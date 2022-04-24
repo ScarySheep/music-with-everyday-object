@@ -27,6 +27,7 @@ public class MusicMenu : MonoBehaviour
     public void ExitMenu()
     {
         arSceneManager.CloseMenu(index);
+        _soundManager.stopSound();
     }
 
     public void init()
@@ -34,16 +35,17 @@ public class MusicMenu : MonoBehaviour
         index = 0;
         musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
         musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
+        // adding this call so that the first sound will play, too
+        _soundManager.playSound(index);
     }
 
     public void NextSong()
     {
         index++;
         index = index % songCount;
-
-            musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
-            musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
-            _soundManager.playNextSound(index);
+        musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
+        musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
+        _soundManager.playSound(index);
     }
 
     public void SelectSong()

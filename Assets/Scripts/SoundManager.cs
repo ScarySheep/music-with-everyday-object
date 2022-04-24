@@ -23,14 +23,22 @@ public class SoundManager : MonoBehaviour
         return sounds[soundIndex];
     }
 
-    public void playNextSound (int soundIndex)
+    /* note: changed from playNextSound to playSound because this will also
+     * be used to play the very first sound in the menu */
+    public void playSound (int soundIndex)
     {
-        if (_audioSource.isPlaying){
+        stopSound();
+        // assign audioclip to audiosource
+        _audioSource.clip = GetSound(soundIndex);
+        _audioSource.Play();
+    }
+
+    // separated into a separate function to be used when we close the menu, too
+    public void stopSound()
+    {
+        if (_audioSource.isPlaying)
+        {
             _audioSource.Stop();
         }
-
-        _audioSource.clip = GetSound(soundIndex);
-        // assign audioclip to audiosource
-        _audioSource.Play();
     }
 }
