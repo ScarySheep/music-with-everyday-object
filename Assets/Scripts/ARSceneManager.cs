@@ -108,6 +108,7 @@ public class ARSceneManager : MonoBehaviour
     {
         musicMenu.GetComponent<MusicMenu>().init();
         musicMenu.SetActive(true);
+        ToggleMusicBlocks(false);
     }
 
     public void CloseMenu(int soundIndex)
@@ -117,5 +118,15 @@ public class ARSceneManager : MonoBehaviour
         //currentGameObject.GetComponent<Material>().color = Color.cyan;
         state = State.Selecting;
         debugText.text = "selecting!";
+        ToggleMusicBlocks(true);
+    }
+
+    private void ToggleMusicBlocks(bool shouldPlay)
+    {
+        foreach (GameObject block in objectPlaced)
+        {
+            if (shouldPlay) block.GetComponent<MusicBlock>().Play();
+            else block.GetComponent<MusicBlock>().Pause();
+        }
     }
 }
