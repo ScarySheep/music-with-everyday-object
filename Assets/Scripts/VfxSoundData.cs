@@ -15,6 +15,9 @@ public class VfxSoundData : MonoBehaviour
     public static float[] _audioBand = new float[8];
     public static float[] _audioBandBuffer = new float[8];
 
+    public static float _amplitude, _amplitudeBuffer;
+    float _amplitudeHighest;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +31,26 @@ public class VfxSoundData : MonoBehaviour
         MakeFrequencyBands();
         BandBuffer();
         CreateAudioBands();
+        GetAmplitude();
+    }
+
+    void GetAmplitude()
+    {
+        //temporary floats just to create a for loop
+        float _currentAmplitude = 0;
+        float _currentAmplitudeBuffer = 0;
+
+        for (int i = 0; i < 8; i++){
+            _currentAmplitude += _audioBand[i];
+            _currentAmplitudeBuffer += _audioBandBuffer [i];
+        }
+
+        if (_currentAmplitude > _amplitudeHighest){
+            _amplitudeHighest = _currentAmplitude;
+        }
+        _amplitude = _currentAmplitude / _amplitudeHighest;
+        _amplitudeBuffer = _currentAmplitudeBuffer / _amplitudeHighest;
+
     }
 
     void CreateAudioBands()
