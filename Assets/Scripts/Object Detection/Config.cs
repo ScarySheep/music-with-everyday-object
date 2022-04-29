@@ -11,6 +11,6 @@ public class Config : MonoBehaviour
     public const int ClassCount = 80;
     public const int BoxSectionSmall = 13;
     public const int BoxSectionLarge = 26;
-    public const float confidenceThreshold = 0.25f;
+    public const float confidenceThreshold = 0.0f;
     public const float iouThreshold = 0.45f;
 }

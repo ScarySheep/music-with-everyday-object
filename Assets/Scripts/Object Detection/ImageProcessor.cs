@@ -46,7 +46,7 @@ public class ImageProcessor : MonoBehaviour
                     // Get that configuration by index
                     // Make it the active one
                     cameraManager.currentConfiguration = config;
-                    ARDebug.log("Camera resolution set");
+                    //ARDebug.log("Camera resolution set");
 
                     break;
                 }

@@ -37,6 +37,7 @@ public class ObjectDetector : MonoBehaviour
         public int anchorIndex;
         public int cellIndexX;
         public int cellIndexY;
+        public float value;
     }
 
     //restructured data with pixel units
@@ -47,6 +48,7 @@ public class ObjectDetector : MonoBehaviour
         public float width;
         public float height;
         public string label;
+        public float value;
     }
 
     void Start()
@@ -77,29 +79,23 @@ public class ObjectDetector : MonoBehaviour
         var outputLarge = engine.PeekOutput("023_convolutional"); //023_convolutional = original output tensor name for 40x40/26x26 boundingBoxes
 
         //this list is used to store the original model output data
-        List<Box> outputBoxList = new List<Box>();
+        Box outputBox = new Box();
 
         //this list is used to store the values converted to intuitive pixel data
-        List<PixelBox> pixelBoxList = new List<PixelBox>();
+        PixelBox pixelBox = new PixelBox();
 
         //decode the output 
-        outputBoxList = DecodeOutput(outputSmall, outputLarge);
+        outputBox = DecodeOutput(outputSmall, outputLarge);
 
         //convert output to intuitive pixel data (x,y coords from the center of the image; height and width in pixels)
-        pixelBoxList = ConvertBoxToPixelData(outputBoxList);
+        pixelBox = ConvertBoxToPixelData(outputBox);
 
         //non max suppression (remove overlapping objects)
-        pixelBoxList = NonMaxSuppression(pixelBoxList);
-
-        if(pixelBoxList.Count>0){
-            ARDebug.log("Object found!");
-        }
+        //pixelBox = NonMaxSuppression(pixelBox);
 
         //draw bounding boxes
-        for (int i = 0; i < pixelBoxList.Count; i++)
-        {
-            DrawBox(pixelBoxList[i]);
-        }
+        DrawBox(pixelBox);
+        
 
         //clean memory
         input.Dispose();
@@ -138,7 +134,7 @@ public class ObjectDetector : MonoBehaviour
         rt2.anchorMax = new Vector2(1, 1);
     }
 
-    public List<PixelBox> NonMaxSuppression(List<PixelBox> boxList)
+    /*public List<PixelBox> NonMaxSuppression(List<PixelBox> boxList)
     {
         for (int i = 0; i < boxList.Count - 1; i++)
         {
@@ -151,9 +147,20 @@ public class ObjectDetector : MonoBehaviour
             }
         }
         return boxList;
+    }*/
+
+    public Box DecodeOutput(Tensor outputSmall, Tensor outputLarge)
+    {
+        Box outputBox = new Box();
+        outputBox.value = 0;
+        //decode results into a list for each output(20x20/13x13 and 40x40/26x26), anchor mask selects the output box presets (first 3 or the last 3 presets) 
+        outputBox = DecodeYolo(outputBox, outputLarge, boxSectionLarge, 0);
+        outputBox = DecodeYolo(outputBox, outputSmall, boxSectionSmall, 3);
+
+        return outputBox;
     }
 
-    public List<Box> DecodeYolo(List<Box> outputBoxList, Tensor output, int boxSections, int anchorMask)
+    public Box DecodeYolo(Box outputBox, Tensor output, int boxSections, int anchorMask)
     {
         for (int boundingBoxX = 0; boundingBoxX < boxSections; boundingBoxX++)
         {
@@ -176,58 +183,47 @@ public class ObjectDetector : MonoBehaviour
                             }
                         }
                         //Debug.Log(labels[bestIndex]);
-                        Box tempBox;
-                        tempBox.x = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize];
-                        tempBox.y = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 1];
-                        tempBox.width = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 2];
-                        tempBox.height = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 3];
-                        tempBox.label = labels[bestIndex];
-                        tempBox.anchorIndex = anchor + anchorMask;
-                        tempBox.cellIndexY = boundingBoxX;
-                        tempBox.cellIndexX = boundingBoxY;
-                        outputBoxList.Add(tempBox);
+                        if(bestValue > outputBox.value){
+                            Box tempBox;
+                            tempBox.x = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize];
+                            tempBox.y = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 1];
+                            tempBox.width = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 2];
+                            tempBox.height = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 3];
+                            tempBox.label = labels[bestIndex];
+                            tempBox.anchorIndex = anchor + anchorMask;
+                            tempBox.cellIndexY = boundingBoxX;
+                            tempBox.cellIndexX = boundingBoxY;
+                            tempBox.value = bestValue;
+                            outputBox = tempBox;
+                        }
                     }
                 }
             }
         }
-        return outputBoxList;
+        return outputBox;
     }
 
-    public List<Box> DecodeOutput(Tensor outputSmall, Tensor outputLarge)
+
+
+    public PixelBox ConvertBoxToPixelData(Box box)
     {
-        List<Box> outputBoxList = new List<Box>();
+        PixelBox pixelBox = new PixelBox();
 
-        //decode results into a list for each output(20x20/13x13 and 40x40/26x26), anchor mask selects the output box presets (first 3 or the last 3 presets) 
-        outputBoxList = DecodeYolo(outputBoxList, outputLarge, boxSectionLarge, 0);
-        outputBoxList = DecodeYolo(outputBoxList, outputSmall, boxSectionSmall, 3);
+        //apply anchor mask, each output uses a different preset box
+        var boxSections = box.anchorIndex > 2 ? boxSectionSmall : boxSectionLarge;
 
-        return outputBoxList;
-    }
+        //move marker to the edge of the picture -> move to the center of the cell -> add cell offset (cell size * amount of cells) -> add scale
+        pixelBox.x = (float)(-onScreenResolutionX * 0.5) + onScreenResolutionX / boxSections * 0.5f +
+                    onScreenResolutionX / boxSections * box.cellIndexX + Sigmoid(box.x);
+        pixelBox.y = (float)(-onScreenResolutionY * 0.5) + onScreenResolutionX / boxSections * 0.5f +
+                        onScreenResolutionX / boxSections * box.cellIndexY + Sigmoid(box.y);
 
-    public List<PixelBox> ConvertBoxToPixelData(List<Box> boxList)
-    {
-        List<PixelBox> pixelBoxList = new List<PixelBox>();
-        for (int i = 0; i < boxList.Count; i++)
-        {
-            PixelBox tempBox;
+        //select the anchor box and multiply it by scale
+        pixelBox.width = anchors[box.anchorIndex * 2] * (float)Math.Pow(Math.E, box.width);
+        pixelBox.height = anchors[box.anchorIndex * 2 + 1] * (float)Math.Pow(Math.E, box.height);
+        pixelBox.label = box.label;
 
-            //apply anchor mask, each output uses a different preset box
-            var boxSections = boxList[i].anchorIndex > 2 ? boxSectionSmall : boxSectionLarge;
-
-            //move marker to the edge of the picture -> move to the center of the cell -> add cell offset (cell size * amount of cells) -> add scale
-            tempBox.x = (float)(-onScreenResolutionX * 0.5) + onScreenResolutionX / boxSections * 0.5f +
-                        onScreenResolutionX / boxSections * boxList[i].cellIndexX + Sigmoid(boxList[i].x);
-            tempBox.y = (float)(-onScreenResolutionY * 0.5) + onScreenResolutionX / boxSections * 0.5f +
-                          onScreenResolutionX / boxSections * boxList[i].cellIndexY + Sigmoid(boxList[i].y);
-
-            //select the anchor box and multiply it by scale
-            tempBox.width = anchors[boxList[i].anchorIndex * 2] * (float)Math.Pow(Math.E, boxList[i].width);
-            tempBox.height = anchors[boxList[i].anchorIndex * 2 + 1] * (float)Math.Pow(Math.E, boxList[i].height);
-            tempBox.label = boxList[i].label;
-            pixelBoxList.Add(tempBox);
-        }
-
-        return pixelBoxList;
+        return pixelBox;
     }
 
 
