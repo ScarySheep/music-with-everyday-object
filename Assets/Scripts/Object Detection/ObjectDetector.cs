@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Barracuda;
+using UnityEngine.XR.ARFoundation;
 
 public class ObjectDetector : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class ObjectDetector : MonoBehaviour
     public NNModel srcModel;
     public Transform displayLocation;
     public Font font;
+    public ARRaycastManager rayCastManager;
+    public List<ARRaycastHit> hits = new List<ARRaycastHit>();
+    public GameObject objectToPlace;
 
     private Model model;
     private IWorker engine;
@@ -95,12 +99,35 @@ public class ObjectDetector : MonoBehaviour
 
         //draw bounding boxes
         DrawBox(pixelBox);
-        
+
+        //try to raycast
+        if (pixelBox.value != 0)
+        {
+            Vector3? hit = Raycast();
+            if (hit != null)
+            {
+                //Athenaaaaaa add your code here :)
+                GameObject obj = Instantiate(objectToPlace, (Vector3)hit, Quaternion.identity);
+            }
+        }
 
         //clean memory
         input.Dispose();
         engine.Dispose();
         Resources.UnloadUnusedAssets();
+    }
+
+    private Vector3? Raycast()
+    {
+        Vector2 screenPosition = Camera.main.ViewportToScreenPoint(new Vector2(0.5f, 0.5f));
+        hits = new List<ARRaycastHit>();
+        rayCastManager.Raycast(screenPosition, hits, UnityEngine.XR.ARSubsystems.TrackableType.Planes);
+
+        if (hits.Count > 0)
+        {
+            return hits[0].pose.position;
+        }
+        return null;
     }
 
     public void DrawBox(PixelBox box)
@@ -183,7 +210,8 @@ public class ObjectDetector : MonoBehaviour
                             }
                         }
                         //Debug.Log(labels[bestIndex]);
-                        if(bestValue > outputBox.value){
+                        if (bestValue > outputBox.value)
+                        {
                             Box tempBox;
                             tempBox.x = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize];
                             tempBox.y = output[0, boundingBoxX, boundingBoxY, anchor * anchorBatchSize + 1];
@@ -222,6 +250,7 @@ public class ObjectDetector : MonoBehaviour
         pixelBox.width = anchors[box.anchorIndex * 2] * (float)Math.Pow(Math.E, box.width);
         pixelBox.height = anchors[box.anchorIndex * 2 + 1] * (float)Math.Pow(Math.E, box.height);
         pixelBox.label = box.label;
+        pixelBox.value = box.value;
 
         return pixelBox;
     }
