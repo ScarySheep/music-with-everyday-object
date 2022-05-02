@@ -14,12 +14,20 @@ public class MusicBlock : MonoBehaviour
     private GameObject ARCam;
     private bool menuIsShowing;
 
+    private HomeManager HOME_SCENE_MANAGER;
+
     // Start is called before the first frame update
     void Start()
     {
+        AssignManager();
         AssignSoundPlayer();
         SetInitialState();
         AssignCam();
+    }
+
+    private void AssignManager()
+    {
+        HOME_SCENE_MANAGER = GameObject.Find("SceneManager").GetComponent<HomeManager>();
     }
 
     private void AssignSoundPlayer()
@@ -48,9 +56,8 @@ public class MusicBlock : MonoBehaviour
      * of the scene manager, but I think that might be a good idea */
     public void MB_OpenSoundMenu()
     {
-        HideMenu();
-        ARSceneManager ARSM = GameObject.Find("SceneManager").GetComponent<ARSceneManager>();
-        ARSM.OpenMenu();
+        HideMenu(); // hiding THIS local menu
+        HOME_SCENE_MANAGER.OpenMenu(); // opening the sound library menu
     }
 
     // Update is called once per frame

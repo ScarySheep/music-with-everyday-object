@@ -14,19 +14,19 @@ public class MusicMenu : MonoBehaviour
 
     public SoundManager _soundManager;
 
-    private ARSceneManager arSceneManager;
+    private HomeManager HOME_SCENE_MANAGER;
     private int songCount;
     private int index = 0;
 
     void Start()
     {
         songCount = musicCoverSprites.Count();
-        arSceneManager = sceneManager.GetComponent<ARSceneManager>();
+        HOME_SCENE_MANAGER = sceneManager.GetComponent<HomeManager>();
     }
 
     public void ExitMenu()
     {
-        arSceneManager.CloseMenu(index);
+        HOME_SCENE_MANAGER.CloseMenu(index);
         _soundManager.stopSound();
     }
 
