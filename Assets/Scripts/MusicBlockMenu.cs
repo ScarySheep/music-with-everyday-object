@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 /* This script should live on the UI canvas used for the music block menu! */
 public class MusicBlockMenu : MonoBehaviour

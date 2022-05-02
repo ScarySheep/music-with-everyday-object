@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MusicMenu : MonoBehaviour
@@ -24,10 +23,10 @@ public class MusicMenu : MonoBehaviour
         HOME_SCENE_MANAGER = sceneManager.GetComponent<HomeManager>();
     }
 
-    public void ExitMenu()
+    private void ExitMenu(int selectedIndex)
     {
-        HOME_SCENE_MANAGER.CloseMenu(index);
         _soundManager.stopSound();
+        HOME_SCENE_MANAGER.CloseMenu(selectedIndex);
     }
 
     public void init()
@@ -48,10 +47,16 @@ public class MusicMenu : MonoBehaviour
         _soundManager.playSound(index);
     }
 
+    // assign the selected song or sound
     public void SelectSong()
     {
-        //assign songs
-        ExitMenu();
+        ExitMenu(index);
+    }
+
+    // go back (don't assign anything)
+    public void ExitNoSelection()
+    {
+        ExitMenu(-1);
     }
 
 }
