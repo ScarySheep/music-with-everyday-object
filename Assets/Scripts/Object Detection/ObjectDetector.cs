@@ -13,7 +13,7 @@ public class ObjectDetector : MonoBehaviour
     public Font font;
     public ARRaycastManager rayCastManager;
     public List<ARRaycastHit> hits = new List<ARRaycastHit>();
-    public GameObject objectToPlace;
+    public Vector3 TO_PLACE_POS;
 
     private Model model;
     private IWorker engine;
@@ -29,6 +29,10 @@ public class ObjectDetector : MonoBehaviour
     //model output returns box scales relative to the anchor boxes, 3 are used for 40x40/26x26 outputs and other 3 for 20x20/13x13 outputs,
     //each cell has 3 boxes 3x85=255
     private readonly float[] anchors = { 10, 14, 23, 27, 37, 58, 81, 82, 135, 169, 344, 319 };
+
+    // related to code flow
+    GameObject placed;
+
 
     //box struct with the original output data
     public struct Box
@@ -107,7 +111,8 @@ public class ObjectDetector : MonoBehaviour
             if (hit != null)
             {
                 //Athenaaaaaa add your code here :)
-                GameObject obj = Instantiate(objectToPlace, (Vector3)hit, Quaternion.identity);
+                //GameObject newObj = Instantiate(objectToPlace, (Vector3)hit, Quaternion.identity);
+                TO_PLACE_POS = (Vector3)hit;
             }
         }
 
@@ -115,6 +120,11 @@ public class ObjectDetector : MonoBehaviour
         input.Dispose();
         engine.Dispose();
         Resources.UnloadUnusedAssets();
+    }
+
+    public Vector3 GetToPlacePos()
+    {
+        return TO_PLACE_POS;
     }
 
     private Vector3? Raycast()
