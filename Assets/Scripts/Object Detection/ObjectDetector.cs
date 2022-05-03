@@ -171,6 +171,14 @@ public class ObjectDetector : MonoBehaviour
         rt2.anchorMax = new Vector2(1, 1);
     }
 
+    public void EraseBoxAndLabel()
+    {
+        GameObject drawnBox = GameObject.Find("ObjectBox");
+        Destroy(drawnBox);
+        GameObject writtenLabel = GameObject.Find("ObjectLabel");
+        Destroy(writtenLabel);
+    }
+
     /*public List<PixelBox> NonMaxSuppression(List<PixelBox> boxList)
     {
         for (int i = 0; i < boxList.Count - 1; i++)
