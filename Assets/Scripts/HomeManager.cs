@@ -7,7 +7,8 @@ public class HomeManager : MonoBehaviour
 {
     public bool DEBUG_ON;
 
-    public GameObject musicMenu;
+    public GameObject soundLibMenu;
+    public GameObject beatMenu;
     public ObjectDetector objDetector;
     public GameObject homeModeBTN;
     public GameObject detectModeBTN;
@@ -107,18 +108,41 @@ public class HomeManager : MonoBehaviour
      * 
      * also called by a song change button on the block's interface
      */
-    public void OpenMenu()
+    public void OpenSoundLib()
     {
         SetState(State.SettingSound);
-        musicMenu.GetComponent<MusicMenu>().init();
         ToggleMusicBlocks(false);
-        Show(musicMenu);
+        Show(soundLibMenu);
+        Hide(detectModeBTN);
+        Show(homeModeBTN);
     }
 
-    // closes the sound library
-    public void CloseMenu(int soundIndex)
+    public void CloseSoundLib()
     {
-        Hide(musicMenu);
+        Hide(soundLibMenu);
+        Show(detectModeBTN);
+        Hide(homeModeBTN);
+        SetState(State.Selecting);
+        ToggleMusicBlocks(true);
+    }
+
+    public void OpenBeatMenu()
+    {
+        beatMenu.GetComponent<MusicMenu>().init();
+        Hide(soundLibMenu);
+        Show(beatMenu);
+    }
+
+    public void BeatMenuBack()
+    {
+        Hide(beatMenu);
+        Show(soundLibMenu);
+    }
+
+    // to be called after successfully selecting a beat
+    public void CloseBeatMenu(int soundIndex)
+    {
+        Hide(beatMenu);
         currentGameObject.GetComponent<MusicBlock>().AssignSound(soundIndex);
         ToggleMusicBlocks(true);
         Hide(homeModeBTN);
@@ -136,25 +160,50 @@ public class HomeManager : MonoBehaviour
         // detection UI updates handled in DetectMenuManager
     }
 
-    // called (indirectly) by the "Home" button
-    private void QuitDetectionMode()
+    private void BackToSelectMode()
     {
         ToggleMusicBlocks(true);
         Show(detectModeBTN);
         Hide(homeModeBTN);
         SetState(State.Selecting);
+    }
+
+    // called (indirectly) by the "Home" button
+    private void QuitDetectionMode()
+    {
+        BackToSelectMode();
         // detection UI updates handled in DetectMenuManager
+    }
+
+    private void QuitSettingSound()
+    {
+        Hide(beatMenu);
+        Hide(soundLibMenu);
+        GameObject soundLib = GameObject.Find("SoundManager");
+        soundLib.GetComponent<SoundManager>().stopSound();
+        BackToSelectMode();
     }
 
     // called by the "Home" button
     public void GoHome()
     {
-        // when called from the Detection UI
-        if (state == State.Detecting)
+        switch(state)
         {
-            QuitDetectionMode();
+            // when called from the Detection UI
+            case State.Detecting:
+                {
+                    QuitDetectionMode();
+                    break;
+                }
+            // when called from sound library browsing
+            case State.SettingSound:
+                {
+                    QuitSettingSound();
+                    break;
+                }
+            default: break;
         }
-        // TODO: need nav from library browse mode, recording/uploading modes
+        // TODO: need nav to and from recording/uploading modes
     }
 
     /* for more readable code */

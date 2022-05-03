@@ -23,12 +23,6 @@ public class MusicMenu : MonoBehaviour
         HOME_SCENE_MANAGER = sceneManager.GetComponent<HomeManager>();
     }
 
-    private void ExitMenu(int selectedIndex)
-    {
-        _soundManager.stopSound();
-        HOME_SCENE_MANAGER.CloseMenu(selectedIndex);
-    }
-
     public void init()
     {
         index = 0;
@@ -50,13 +44,15 @@ public class MusicMenu : MonoBehaviour
     // assign the selected song or sound
     public void SelectSong()
     {
-        ExitMenu(index);
+        _soundManager.stopSound();
+        HOME_SCENE_MANAGER.CloseBeatMenu(index);
     }
 
-    // go back (don't assign anything)
-    public void ExitNoSelection()
+    // go back to the sound library
+    public void Back()
     {
-        ExitMenu(-1);
+        _soundManager.stopSound();
+        HOME_SCENE_MANAGER.BeatMenuBack();
     }
 
 }

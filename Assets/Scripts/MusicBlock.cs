@@ -64,7 +64,7 @@ public class MusicBlock : MonoBehaviour
     public void MB_OpenSoundMenu()
     {
         HideMenu(); // hiding THIS local menu
-        HOME_SCENE_MANAGER.OpenMenu(); // opening the sound library menu
+        HOME_SCENE_MANAGER.OpenSoundLib(); // opening the sound library menu
     }
 
     // Update is called once per frame
