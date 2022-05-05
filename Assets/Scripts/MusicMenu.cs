@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class MusicMenu : MonoBehaviour
@@ -12,19 +11,16 @@ public class MusicMenu : MonoBehaviour
     public Text musicTitle;
     public GameObject sceneManager;
 
-    private ARSceneManager arSceneManager;
+    public SoundManager _soundManager;
+
+    private HomeManager HOME_SCENE_MANAGER;
     private int songCount;
     private int index = 0;
 
     void Start()
     {
         songCount = musicCoverSprites.Count();
-        arSceneManager = sceneManager.GetComponent<ARSceneManager>();
-    }
-
-    public void ExitMenu()
-    {
-        arSceneManager.CloseMenu(index);
+        HOME_SCENE_MANAGER = sceneManager.GetComponent<HomeManager>();
     }
 
     public void init()
@@ -32,26 +28,31 @@ public class MusicMenu : MonoBehaviour
         index = 0;
         musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
         musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
+        // adding this call so that the first sound will play, too
+        _soundManager.playSound(index);
     }
 
     public void NextSong()
     {
         index++;
-        if (index == songCount)
-        {
-            ExitMenu();
-        }
-        else
-        {
-            musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
-            musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
-        }
+        index = index % songCount;
+        musicCover.GetComponent<Image>().sprite = musicCoverSprites[index];
+        musicTitle.GetComponent<Text>().text = musicTitleTexts[index];
+        _soundManager.playSound(index);
     }
 
+    // assign the selected song or sound
     public void SelectSong()
     {
-        //assign songs
-        ExitMenu();
+        _soundManager.stopSound();
+        HOME_SCENE_MANAGER.CloseBeatMenu(index);
+    }
+
+    // go back to the sound library
+    public void Back()
+    {
+        _soundManager.stopSound();
+        HOME_SCENE_MANAGER.BeatMenuBack();
     }
 
 }
