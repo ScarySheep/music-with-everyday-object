@@ -50,4 +50,12 @@ public class PlaneValidator : MonoBehaviour
     {
 
     }
+
+    public void TogglePlaneVisibility(bool visible)
+    {
+        foreach (ARPlane plane in arPlanes)
+        {
+            plane.gameObject.SetActive(visible);
+        }
+    }
 }

@@ -30,10 +30,6 @@ public class ObjectDetector : MonoBehaviour
     //each cell has 3 boxes 3x85=255
     private readonly float[] anchors = { 10, 14, 23, 27, 37, 58, 81, 82, 135, 169, 344, 319 };
 
-    // related to code flow
-    GameObject placed;
-
-
     //box struct with the original output data
     public struct Box
     {
@@ -101,17 +97,16 @@ public class ObjectDetector : MonoBehaviour
         //non max suppression (remove overlapping objects)
         //pixelBox = NonMaxSuppression(pixelBox);
 
-        //draw bounding boxes
-        DrawBox(pixelBox);
-
         //try to raycast
         if (pixelBox.value != 0)
         {
+            //draw bounding boxes
+            DrawBox(pixelBox);
+
             Vector3? hit = Raycast();
             if (hit != null)
             {
                 //Athenaaaaaa add your code here :)
-                //GameObject newObj = Instantiate(objectToPlace, (Vector3)hit, Quaternion.identity);
                 TO_PLACE_POS = (Vector3)hit;
             }
         }
@@ -174,9 +169,9 @@ public class ObjectDetector : MonoBehaviour
     public void EraseBoxAndLabel()
     {
         GameObject drawnBox = GameObject.Find("ObjectBox");
-        Destroy(drawnBox);
+        if (drawnBox) Destroy(drawnBox);
         GameObject writtenLabel = GameObject.Find("ObjectLabel");
-        Destroy(writtenLabel);
+        if (writtenLabel) Destroy(writtenLabel);
     }
 
     /*public List<PixelBox> NonMaxSuppression(List<PixelBox> boxList)

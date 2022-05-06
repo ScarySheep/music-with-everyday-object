@@ -11,6 +11,7 @@ public class MusicBlock : MonoBehaviour
     private SoundManager SOUND_MANAGER;
     public float volumeAdjustmentAmt;
     public MusicBlockMenu MBMenu;
+    public GameObject MBcube;
 
     private AudioSource soundPlayer;
     private bool isPlaying;
@@ -19,9 +20,12 @@ public class MusicBlock : MonoBehaviour
 
     private HomeManager HOME_SCENE_MANAGER;
 
+    public bool DEBUG_ON;
+
     // Start is called before the first frame update
     void Start()
     {
+        MBcube.SetActive(DEBUG_ON);
         AssignManagers();
         AssignSoundPlayer();
         SetInitialState();
@@ -91,12 +95,25 @@ public class MusicBlock : MonoBehaviour
         Play();
     }
 
+    public void TurnOn()
+    {
+        Play();
+        ShowMenu();
+    }
+
+    public void TurnOff()
+    {
+        Pause();
+        HideMenu();
+    }
+
     public void Play()
     {
         if (!isPlaying)
         {
             soundPlayer.Play();
             isPlaying = true;
+            MBMenu.ShowPauseButton();
         }
     }
 
@@ -106,6 +123,7 @@ public class MusicBlock : MonoBehaviour
         {
             soundPlayer.Pause();
             isPlaying = false;
+            MBMenu.ShowPlayButton();
         }
     }
 

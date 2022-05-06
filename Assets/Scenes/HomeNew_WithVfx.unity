@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657856, g: 0.49641234, b: 0.57481724, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657838, g: 0.49641234, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -231,12 +231,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DEBUG_ON: 0
+  TO_PLACE_NAME: MickeyMouseCube
   soundLibMenu: {fileID: 3152912147389183467}
   beatMenu: {fileID: 1953635621}
   objDetector: {fileID: 113243110}
   homeModeBTN: {fileID: 1853657949}
   detectModeBTN: {fileID: 909042689}
-  objectToPlace: {fileID: 5586972583618904198, guid: 07568d6e40107474e9b2639494df893e, type: 3}
+  objectToPlace: {fileID: 5586972583618904198, guid: 32c17e969a04eee42802739d031e2f28, type: 3}
   debugText: {fileID: 342617007}
 --- !u!1 &165524626
 GameObject:

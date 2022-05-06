@@ -6,15 +6,19 @@ using UnityEngine;
 public class MusicBlockMenu : MonoBehaviour
 {
     private Camera camToLookAt;
+    public GameObject volumeSubmenu;
+    public GameObject playBTN;
+    public GameObject pauseBTN;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        Hide();
-    }
+    private bool VC_SHOWING;
 
     // Update is called once per frame
     void Update() { }
+
+    void Start()
+    {
+        VC_SHOWING = false;
+    }
 
     public void GiveCamToCanvas(Camera cam)
     {
@@ -28,18 +32,53 @@ public class MusicBlockMenu : MonoBehaviour
 
     public void Show()
     {
-        SetVisibility(true);
+        SetVisibility(this.gameObject, true);
+        HideVolumeControls();
     }
 
     public void Hide()
     {
-        SetVisibility(false);
+        SetVisibility(this.gameObject, false);
     }
 
-    private void SetVisibility(bool visible)
+    private void SetVisibility(GameObject obj, bool visible)
     {
-        this.gameObject.SetActive(visible);
-        /* TODO: do we also need to set the child components, or does changing
-         * the parent's status automatically change all the children? */
+        obj.SetActive(visible);
+    }
+
+    public void ToggleVolumeControls()
+    {
+        if (VC_SHOWING)
+        {
+            HideVolumeControls();
+        }
+        else
+        {
+            ShowVolumeControls();
+        }
+    }
+
+    private void ShowVolumeControls()
+    {
+        SetVisibility(volumeSubmenu, true);
+        VC_SHOWING = true;
+    }
+
+    private void HideVolumeControls()
+    {
+        SetVisibility(volumeSubmenu, false);
+        VC_SHOWING = false;
+    }
+
+    public void ShowPlayButton()
+    {
+        SetVisibility(pauseBTN, false);
+        SetVisibility(playBTN, true);
+    }
+
+    public void ShowPauseButton()
+    {
+        SetVisibility(playBTN, false);
+        SetVisibility(pauseBTN, true);
     }
 }

@@ -37,6 +37,14 @@ public class DetectMenuManager : MonoBehaviour
         }
     }
 
+    /* hoped to use this to prevent "next" from showing in cases when
+     * nothing was detected...but it is not working
+     * 
+     * private bool ObjWasDetected()
+    {
+        return (GameObject.Find("ObjectBox") != null);
+    }*/
+
     public void PressedDetect()
     {
         Hide(DETECT_BTN);

@@ -6,9 +6,11 @@ using UnityEngine.UI;
 public class HomeManager : MonoBehaviour
 {
     public bool DEBUG_ON;
-
+    public string TO_PLACE_NAME;
+    
     public GameObject soundLibMenu;
     public GameObject beatMenu;
+    public GameObject vfxUI;
     public ObjectDetector objDetector;
     public GameObject homeModeBTN;
     public GameObject detectModeBTN;
@@ -40,55 +42,13 @@ public class HomeManager : MonoBehaviour
         if (DEBUG_ON) Show(debugText.gameObject);
     }
 
-    // switch based on state
-    void Update()
-    {
-        switch (state)
-        {
-            case State.Selecting:
-                {
-                    if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-                    {
-                        // Construct a ray from the current touch coordinates
-                        Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-                        RaycastHit hit;
-                        if (Physics.Raycast(ray, out hit))
-                        {
-                            if (hit.collider.gameObject.name == "VirtualMusicBlock(Clone)")
-                            {
-                                currentGameObject = hit.collider.gameObject;
-                                SetState(State.BlockInteracting);
-                                OpenBlockMenu();
-                            }
-                        }
-                        else
-                        {
-                            debugText.text = "hit nothing!";
-                        }
-                    }
-                    break;
-                }
-            default: break;
-        }
-    }
-
-    // opens a block's local "Mickey Mouse" menu
-    public void OpenBlockMenu()
-    {
-        MusicBlock MB = currentGameObject.GetComponent<MusicBlock>();
-        if (MB != null)
-        {
-            MB.ShowMenu();
-        }
-    }
-
     // plays or pauses all music blocks
     private void ToggleMusicBlocks(bool shouldPlay)
     {
         foreach (GameObject block in virtualBlocks)
         {
-            if (shouldPlay) block.GetComponent<MusicBlock>().Play();
-            else block.GetComponent<MusicBlock>().Pause();
+            if (shouldPlay) block.GetComponent<MusicBlock>().TurnOn();
+            else block.GetComponent<MusicBlock>().TurnOff();
         }
     }
 
@@ -131,11 +91,13 @@ public class HomeManager : MonoBehaviour
         beatMenu.GetComponent<MusicMenu>().init();
         Hide(soundLibMenu);
         Show(beatMenu);
+        Show(vfxUI);
     }
 
     public void BeatMenuBack()
     {
         Hide(beatMenu);
+        Hide(vfxUI);
         Show(soundLibMenu);
     }
 
@@ -143,11 +105,12 @@ public class HomeManager : MonoBehaviour
     public void CloseBeatMenu(int soundIndex)
     {
         Hide(beatMenu);
-        currentGameObject.GetComponent<MusicBlock>().AssignSound(soundIndex);
+        Hide(vfxUI);
         ToggleMusicBlocks(true);
         Hide(homeModeBTN);
         Show(detectModeBTN);
         SetState(State.Selecting);
+        currentGameObject.GetComponent<MusicBlock>().AssignSound(soundIndex);
     }
 
     // called by the "GoDetectBTN"
@@ -178,6 +141,7 @@ public class HomeManager : MonoBehaviour
     private void QuitSettingSound()
     {
         Hide(beatMenu);
+        Hide(vfxUI);
         Hide(soundLibMenu);
         GameObject soundLib = GameObject.Find("SoundManager");
         soundLib.GetComponent<SoundManager>().stopSound();
