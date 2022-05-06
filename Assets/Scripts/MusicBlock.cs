@@ -71,6 +71,11 @@ public class MusicBlock : MonoBehaviour
         HOME_SCENE_MANAGER.OpenSoundLib(); // opening the sound library menu
     }
 
+    public void MB_AssignCurrentGO()
+    {
+        HOME_SCENE_MANAGER.AssignCurrentGO(this.gameObject);
+    }
+
     // Update is called once per frame
     void Update()
     {

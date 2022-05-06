@@ -6,16 +6,16 @@ using UnityEngine;
 public class VfxSoundData : MonoBehaviour
 {
     AudioSource _audioSource;
-    public static float[] _samples = new float[512];
+    public float[] _samples = new float[512];
     float[] _freqBand = new float[8];
     float[] _bandBuffer = new float[8];
     float[] _bufferDecrease = new float[8];
 
     float[] _freqBandHighest = new float[8];
-    public static float[] _audioBand = new float[8];
-    public static float[] _audioBandBuffer = new float[8];
+    public float[] _audioBand = new float[8];
+    public float[] _audioBandBuffer = new float[8];
 
-    public static float _amplitude, _amplitudeBuffer;
+    public float _amplitude, _amplitudeBuffer;
     float _amplitudeHighest;
 
     // Start is called before the first frame update

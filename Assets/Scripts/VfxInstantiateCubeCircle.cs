@@ -7,6 +7,9 @@ public class VfxInstantiateCubeCircle : MonoBehaviour
     public GameObject _sampleCubePrebab;
     GameObject[] _sampleCube = new GameObject[512];
     public float _maxScale;
+
+    public VfxSoundData VFXDATA;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +29,7 @@ public class VfxInstantiateCubeCircle : MonoBehaviour
     {
         for(int i = 0; i < 512; i++){
             if(_sampleCube != null){
-                _sampleCube[i].transform.localScale = new Vector3(1, (VfxSoundData._samples[i] * _maxScale) + 1, 1);
+                _sampleCube[i].transform.localScale = new Vector3(1, (VFXDATA._samples[i] * _maxScale) + 1, 1);
             }
         }
     }

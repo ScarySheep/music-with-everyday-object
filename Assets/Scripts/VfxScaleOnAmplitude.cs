@@ -12,7 +12,9 @@ public class VfxScaleOnAmplitude : MonoBehaviour
     //public float _red, _green, _blue;
     //public float _green;
     public float _transparency;
-    
+
+    public VfxSoundData VFXDATA;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,18 +26,18 @@ public class VfxScaleOnAmplitude : MonoBehaviour
     void Update()
     {
         if (!_useBuffer){
-            //transform.localScale = new Vector3 ((VfxSoundData._amplitude * _maxScale) + _startScale, (VfxSoundData._amplitude * _maxScale) + _startScale, (VfxSoundData._amplitude * _maxScale) + _startScale);
-            transform.localScale = new Vector2 ((VfxSoundData._amplitude * _maxScale) + _startScale, (VfxSoundData._amplitude * _maxScale) + _startScale);        
-            //Color _color = new Color (_red * VfxSoundData._amplitude, _green * VfxSoundData._amplitude, _blue * VfxSoundData._amplitude);
-            Color _color = new Color (70, 70, 255, _transparency * VfxSoundData._amplitude);
+            //transform.localScale = new Vector3 ((VFXDATA._amplitude * _maxScale) + _startScale, (VFXDATA._amplitude * _maxScale) + _startScale, (VFXDATA._amplitude * _maxScale) + _startScale);
+            transform.localScale = new Vector2 ((VFXDATA._amplitude * _maxScale) + _startScale, (VFXDATA._amplitude * _maxScale) + _startScale);        
+            //Color _color = new Color (_red * VFXDATA._amplitude, _green * VFXDATA._amplitude, _blue * VFXDATA._amplitude);
+            Color _color = new Color (70, 70, 255, _transparency * VFXDATA._amplitude);
             _spriteColor.color = _color;
         }
 
         if(_useBuffer){
-            //transform.localScale = new Vector3 ((VfxSoundData._amplitude * _maxScale) + _startScale, (VfxSoundData._amplitude * _maxScale) + _startScale, (VfxSoundData._amplitude * _maxScale) + _startScale);
-            transform.localScale = new Vector2 ((VfxSoundData._amplitude * _maxScale) + _startScale, (VfxSoundData._amplitude * _maxScale) + _startScale);
-            //Color _color = new Color (_red * VfxSoundData._amplitude, _green * VfxSoundData._amplitude, _blue * VfxSoundData._amplitude);
-            Color _color = new Color (70, 70, 255, _transparency * VfxSoundData._amplitude);
+            //transform.localScale = new Vector3 ((VFXDATA._amplitude * _maxScale) + _startScale, (VFXDATA._amplitude * _maxScale) + _startScale, (VFXDATA._amplitude * _maxScale) + _startScale);
+            transform.localScale = new Vector2 ((VFXDATA._amplitude * _maxScale) + _startScale, (VFXDATA._amplitude * _maxScale) + _startScale);
+            //Color _color = new Color (_red * VFXDATA._amplitude, _green * VFXDATA._amplitude, _blue * VFXDATA._amplitude);
+            Color _color = new Color (70, 70, 255, _transparency * VFXDATA._amplitude);
            _spriteColor.color = _color;
         }
         

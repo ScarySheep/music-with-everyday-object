@@ -8,6 +8,8 @@ public class VfxCubeLine : MonoBehaviour
     public float _startScale, _scaleMultiplier;
     public bool _useBuffer;
 
+    public VfxSoundData VFXDATA;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,11 +20,11 @@ public class VfxCubeLine : MonoBehaviour
     void Update()
     {
         if (_useBuffer){
-        transform.localScale = new Vector3(transform.localScale.x, (VfxSoundData._audioBandBuffer[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
+        transform.localScale = new Vector3(transform.localScale.x, (VFXDATA._audioBandBuffer[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
         }
 
         if (!_useBuffer){
-        transform.localScale = new Vector3(transform.localScale.x, (VfxSoundData._audioBand[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
+        transform.localScale = new Vector3(transform.localScale.x, (VFXDATA._audioBand[_band] * _scaleMultiplier) + _startScale, transform.localScale.z);
         }
     }
 }

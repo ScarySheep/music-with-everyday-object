@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class HomeManager : MonoBehaviour
 {
     public bool DEBUG_ON;
-    public string TO_PLACE_NAME;
     
     public GameObject soundLibMenu;
     public GameObject beatMenu;
@@ -180,5 +179,10 @@ public class HomeManager : MonoBehaviour
     private void Hide(GameObject toHide)
     {
         toHide.SetActive(false);
+    }
+
+    public void AssignCurrentGO(GameObject go)
+    {
+        currentGameObject = go;
     }
 }

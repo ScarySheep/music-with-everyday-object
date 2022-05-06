@@ -1685,7 +1685,7 @@ MonoBehaviour:
   backBTN: {fileID: 1507939918}
   nextBTN: {fileID: 746640591}
   finalBTN: {fileID: 632100162}
-  NextSceneName: HomeNew_WithVfx
+  NextSceneName: HomeVFX
 --- !u!4 &1864711265
 Transform:
   m_ObjectHideFlags: 0
